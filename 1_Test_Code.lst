@@ -1,0 +1,171 @@
+Microsoft (R) Macro Assembler Version 6.11		    11/14/22 01:41:57
+1_Test_Code.asm						     Page 1 - 1
+
+
+				;-------------------------------------------------------------------------------------
+				; program to input values for x, y and z
+				; and evaluate the expression - (x + y - 2z + 1)
+				; author:  Dr. Mina S. Younan
+				;-------------------------------------------------------------------------------------
+				.386
+				.MODEL FLAT
+				;-------------------------------------------------------------------------------------
+				ExitProcess PROTO NEAR32 stdcall, dwExitCode:DWORD
+
+				include io.h            ; header file for input/output
+			      C ; IO.H -- header file for I/O macros
+			      C ; 32-bit version for flat memory model
+			      C ; R. Detmer   last revised 8/2000
+			      C .NOLIST     ; turn off listing
+			      C .LIST        ; begin listing
+			      C 
+
+ = 0000000D			cr      equ     0dh     ; carriage return character
+ = 0000000A			Lf      equ     0ah     ; line feed
+
+				.STACK  4096             ; reserve 4096-byte stack
+				;-------------------------------------------------------------------------------------
+ 00000000			.DATA                   ; reserve storage for data
+ 00000000 54 68 69 73 20	Prompt1   BYTE   "This program will evaluate the expression",cr,Lf,Lf
+	   70 72 6F 67 72
+	   61 6D 20 77 69
+	   6C 6C 20 65 76
+	   61 6C 75 61 74
+	   65 20 74 68 65
+	   20 65 78 70 72
+	   65 73 73 69 6F
+	   6E 0D 0A 0A
+ 0000002C  20 20 20 20 2D	            	BYTE   "    - (x + y - 2z + 1)",cr,Lf,Lf
+	   20 28 78 20 2B
+	   20 79 20 2D 20
+	   32 7A 20 2B 20
+	   31 29 0D 0A 0A
+ 00000045  66 6F 72 20 79	            	BYTE   "for your choice of integer values.",cr,Lf,Lf
+	   6F 75 72 20 63
+	   68 6F 69 63 65
+	   20 6F 66 20 69
+	   6E 74 65 67 65
+	   72 20 76 61 6C
+	   75 65 73 2E 0D
+	   0A 0A
+ 0000006A  45 6E 74 65 72	            	BYTE   "Enter value for x:  ",0
+	   20 76 61 6C 75
+	   65 20 66 6F 72
+	   20 78 3A 20 20
+	   00
+ 0000007F 45 6E 74 65 72	Prompt2   BYTE   "Enter value for y:  ",0
+	   20 76 61 6C 75
+	   65 20 66 6F 72
+	   20 79 3A 20 20
+	   00
+ 00000094 45 6E 74 65 72	Prompt3   BYTE   "Enter value for z:  ",0
+	   20 76 61 6C 75
+	   65 20 66 6F 72
+	   20 7A 3A 20 20
+	   00
+ 000000A9  00000010 [		Value       	BYTE   16 DUP (?)
+	    00
+	   ]
+ 000000B9 0D 0A 54 68 65	Answer    	BYTE   cr,Lf,"The result is "
+	   20 72 65 73 75
+	   6C 74 20 69 73
+	   20
+ 000000C9  00000006 [		Result      	BYTE   6 DUP (?)
+	    00
+	   ]
+ 000000CF  0D 0A 00		            	BYTE   cr,Lf,0
+				;-------------------------------------------------------------------------------------
+ 00000000			.CODE                           	; start of main program code
+ 00000000			_start:
+				            output Prompt1          	; prompt for x
+				            input  Value,16         	; read ASCII characters
+				            atoi   Value            	; convert to integer
+ 00000030  66| 8B D0		            mov    dx,ax            	; x
+
+				            output Prompt2          	; prompt for y
+				            input  Value,16	; read ASCII characters
+				            atoi   Value           	; convert to integer
+ 00000063  66| 03 D0		            add    dx,ax           	; x + y
+
+				            output Prompt3         	; prompt for z
+				            input  Value,16         	; read ASCII characters
+				            atoi   Value           	; convert to integer
+ 00000096  66| 03 C0		            add    ax,ax           	; 2*z
+ 00000099  66| 2B D0		            sub    dx,ax           	; x + y - 2*z
+ 0000009C  66| 42		            inc    dx               	; x + y - 2*z + 1
+ 0000009E  66| F7 DA		            neg    dx              	; - (x + y - 2*z + 1)
+
+				            itoa   Result,dx        	; convert to ASCII characters
+				            output Answer           	; output label and result
+				            ;---------------------------------------------------------------------------
+				            INVOKE ExitProcess, 0   	; exit with return code 0
+ 000000C9			PUBLIC _start                       		; make entry point public
+				END                                 		; end of source code
+				;-------------------------------------------------------------------------------------
+Microsoft (R) Macro Assembler Version 6.11		    11/14/22 01:41:57
+1_Test_Code.asm						     Symbols 2 - 1
+
+
+
+
+Macros:
+
+                N a m e                 Type
+
+atod . . . . . . . . . . . . . .	Proc
+atoi . . . . . . . . . . . . . .	Proc
+dtoa . . . . . . . . . . . . . .	Proc
+input  . . . . . . . . . . . . .	Proc
+itoa . . . . . . . . . . . . . .	Proc
+output . . . . . . . . . . . . .	Proc
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+STACK  . . . . . . . . . . . . .	32 Bit	 00001000 DWord	  Stack	  'STACK'	 
+_DATA  . . . . . . . . . . . . .	32 Bit	 000000D2 DWord	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 000000C9 DWord	  Public  'CODE'	
+
+
+Procedures,  parameters and locals:
+
+                N a m e                 Type     Value    Attr
+
+$$$$$$00001  . . . . . . . . . .	P Near	 00000001 _TEXT	Length= 000000C8 Private
+ExitProcess  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000000h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+Answer . . . . . . . . . . . . .	Byte	 000000B9 _DATA	
+Lf . . . . . . . . . . . . . . .	Number	 0000000Ah   
+Prompt1  . . . . . . . . . . . .	Byte	 00000000 _DATA	
+Prompt2  . . . . . . . . . . . .	Byte	 0000007F _DATA	
+Prompt3  . . . . . . . . . . . .	Byte	 00000094 _DATA	
+Result . . . . . . . . . . . . .	Byte	 000000C9 _DATA	
+Value  . . . . . . . . . . . . .	Byte	 000000A9 _DATA	
+_start . . . . . . . . . . . . .	L Near	 00000000 _TEXT	Public
+atodproc . . . . . . . . . . . .	L Near	 00000000 FLAT	External
+atoiproc . . . . . . . . . . . .	L Near	 00000000 FLAT	External
+cr . . . . . . . . . . . . . . .	Number	 0000000Dh   
+dtoaproc . . . . . . . . . . . .	L Near	 00000000 FLAT	External
+inproc . . . . . . . . . . . . .	L Near	 00000000 FLAT	External
+itoaproc . . . . . . . . . . . .	L Near	 00000000 FLAT	External
+outproc  . . . . . . . . . . . .	L Near	 00000000 FLAT	External
+
+	   0 Warnings
+	   0 Errors

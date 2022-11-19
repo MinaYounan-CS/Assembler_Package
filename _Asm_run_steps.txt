@@ -1,0 +1,13 @@
+Comands for compiling and executing Assembly code:
+-------------------------------------------------------------------------------
+  Step0: ensure that all of the following files are exist on the same directory
+         {YourCode.asm, 0_ASM_386.cmd, dm.dll, eecxx.dll, em.dll, io.h, io.obj,
+          Kernel32.lib, link.exe, ML.ERR, ML.exe, MS_ASM386.cmd, 
+          msdbi.dll, msdis100.dll, MSPDB50.dll, MSVCP50.dll, shcv.dll, tlloc.dll
+	  windbg.cnt, windbg.exe, WINDBG.HLP}
+
+  Step1: run 0_ASM_386.cmd
+  Step2: write filename without extension
+-------------------------------------------------------------------------------
+Test: Write without extension --> 1_Test_Code
+-------------------------------------------------------------------------------
